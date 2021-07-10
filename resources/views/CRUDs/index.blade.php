@@ -48,6 +48,9 @@
         @endforeach
     </table>
 
+    <div class="d-flex justify-content-center">
+        {{ $CRUDs->links() }}
+    </div>
 
     <div class="row">
         <div class="col-lg-12 margin-tb">

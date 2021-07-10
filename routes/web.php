@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,30 +15,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers\CRUDController;
+use App\Http\Controllers\CrudController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-//
-//Route::group(['prefix' => 'CRUDs'], function (){
-//    Route::get('', [CRUDController::class, 'index'])->name('index');
-//    Route::get('details/{id}', [CRUDController::class, 'show'])->name('show');
-//    Route::delete('delete/{id}', [CRUDController::class, 'delete'])->name('delete');
-//    Route::get('edit/{id}', [CRUDController::class, 'edit'])->name('edit');
-//    Route::get('create/{id}', [CRUDController::class, 'create'])->name('create');
-//    Route::post('store/{id}', [CRUDController::class, 'store'])->name('store');
-////    Route::put('update/{id}', [CRUDController::class, 'update'])->name('update');
-//});
+Auth::routes();
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin']], function () {
+    Route::get('/', [CrudController::class, 'index'])->name('index');
+    Route::post('/hire/{id}', [CrudController::class, 'hire'])->name('hire');
+    Route::get('/create/', [CrudController::class, 'create'])->name('create');
+    Route::post('/store/', [CrudController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [CrudController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [CrudController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [CrudController::class, 'delete'])->name('delete');
+    Route::get('/mail-send', [WelcomeController::class, 'mailSend']);
+});
 
 
-Route::get('/CRUDs', [CRUDController::class, 'index'])->name('index');
-Route::post('/CRUDs/hire/{id}', [CRUDController::class, 'hire'])->name('hire');
-//Route::get('/CRUDs/details/{id}', [CRUDController::class, 'show'])->name('show');
-Route::get('/CRUDs/create/', [CRUDController::class, 'create'])->name('create');
-Route::post('/CRUDs/store/', [CRUDController::class, 'store'])->name('store');
-Route::get('/CRUDs/edit/{id}', [CRUDController::class, 'edit'])->name('edit');
-Route::put('/CRUDs/update/{id}', [CRUDController::class, 'update'])->name('update');
-Route::delete('/CRUDs/delete/{id}', [CRUDController::class, 'delete'])->name('delete');
 
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

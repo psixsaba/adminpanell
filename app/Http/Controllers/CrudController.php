@@ -7,13 +7,13 @@ use App\Models\Crud;
 use Illuminate\Http\Request;
 //use function GuzzleHttp\Promise\all;
 
-class CRUDController extends Controller
+class CrudController extends Controller
 {
 
     public function index()
     {
-        $CRUDs = Crud::orderBy('Surname')->get();
-
+//
+        $CRUDs = Crud::orderBy('Surname')->paginate(10);
 
         return view('CRUDs.index')->with('CRUDs', $CRUDs);
 
@@ -57,7 +57,7 @@ class CRUDController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+//        dd($request->all());
 
         $CRUD = Crud::find($id);
         $CRUD->update($request->all());
